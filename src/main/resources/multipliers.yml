@@ -1,0 +1,12 @@
+rarity:
+  common: 1.25
+  rare: 1.5
+  exotic: 2.0
+  mythic: 3
+
+tool:
+  pickaxe: 1.75
+  sword: 2.5
+  axe: 1.25
+  shovel: 1.25
+  armor: 1.25

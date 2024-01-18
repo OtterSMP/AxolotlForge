@@ -1,0 +1,11 @@
+sounds:
+  repaired:
+    enabled: true
+    sound: BLOCK_ANVIL_USE
+    volume: 1.0
+    pitch: 1.0
+  error:
+    enabled: true
+    sound: BLOCK_ANVIL_LAND
+    volume: 1.0
+    pitch: 1.0

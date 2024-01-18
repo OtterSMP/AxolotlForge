@@ -1,0 +1,23 @@
+title: "&7Forge"
+
+layout:
+  - ". . . . . . . . ."
+  - ". . . . . . . . ."
+  - ". . r . . . u . ."
+  - ". . . . . . . . ."
+  - ". . . . . . . . ."
+  - ". . . . . . . . ."
+
+
+lore-to-add:
+  - "&7Click to repair this item"
+  - "&7Cost to repair: &7%value%$ and &7%runes% repair runes."
+
+items:
+  r:
+    type: BARRIER
+    name: "&7Insert an item to repair"
+    lore:
+      - "&7Insert an item here to repair it!"
+  u:
+    type: BARRIER

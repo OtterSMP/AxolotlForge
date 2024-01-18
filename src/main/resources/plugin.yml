@@ -1,0 +1,4 @@
+name: AxolotlForgePlugin
+version: '${version}'
+main: dev.imlukas.axolotlforgeplugin.AxolotlForgePlugin
+api-version: '1.20'

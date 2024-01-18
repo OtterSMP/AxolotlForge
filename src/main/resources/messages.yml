@@ -1,0 +1,6 @@
+messages:
+  cant-repair: "&cYou can't repair this item."
+  not-enough-money: '&cYou don''t have enough money to do repair this item.'
+  not-enough-runes: '&cYou don''t have enough runes to do repair this item.'
+  not-damaged: '&cThis item is not damaged.'
+  repaired: '&aItem repaired!'

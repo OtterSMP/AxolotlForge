@@ -1,7 +1,6 @@
 package dev.imlukas.axolotlforgeplugin;
 
 import dev.imlukas.axolotlforgeplugin.commands.ForgeMenuCommand;
-import dev.imlukas.axolotlforgeplugin.commands.GiveRepairRunes;
 import dev.imlukas.axolotlforgeplugin.multiplier.ForgeMultipliers;
 import dev.imlukas.axolotlforgeplugin.utils.command.command.CommandManager;
 import dev.imlukas.axolotlforgeplugin.utils.command.command.impl.AdvancedCommand;
@@ -57,7 +56,6 @@ public final class AxolotlForgePlugin extends BetterJavaPlugin {
         this.commandManager = new CommandManager(this, messages);
 
         registerCommand(new ForgeMenuCommand(this));
-        registerCommand(new GiveRepairRunes());
     }
 
     @Override

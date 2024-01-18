@@ -29,7 +29,12 @@ public class ForgeMultipliers {
 
     public double getMultiplier(ItemStack toRepair) {
         String material = toRepair.getType().name();
-        String toolType = material.split("_")[1].toLowerCase(Locale.ROOT);
+        String toolType;
+        if (material.equalsIgnoreCase("bow")) {
+            toolType = "bow";
+        } else {
+            toolType = material.split("_")[1].toLowerCase(Locale.ROOT);
+        }
 
         ItemMeta meta = toRepair.getItemMeta();
         List<String> lore = meta.getLore();

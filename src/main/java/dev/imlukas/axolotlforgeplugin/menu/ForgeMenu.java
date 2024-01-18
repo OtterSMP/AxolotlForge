@@ -18,6 +18,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +31,7 @@ public class ForgeMenu extends Menu {
     private final double baseValue;
     private final int baseRunes;
     private final ItemComparator itemComparator;
+    private final NumberFormat numberFormat = new DecimalFormat("##.###");
 
     public ForgeMenu(AxolotlForgePlugin plugin, Player viewer) {
         super(plugin, viewer);
@@ -51,14 +54,11 @@ public class ForgeMenu extends Menu {
         BaseLayer layer = new BaseLayer(menu);
         menu.addRenderable(layer);
 
-        ItemStack defaultRepair = applicator.getItem("r");
-        ItemStack defaultResult = applicator.getItem("u");
-
         Button repairButton = applicator.registerButton(layer, "r");
         Button resultButton = applicator.registerButton(layer, "u");
 
         menu.setOnPlayerItemClick(itemStack -> {
-            if (!ItemUtil.isTool(itemStack)) {
+            if (!ItemUtil.isForgeCompatible(itemStack)) {
                 messages.sendMessage(player, "cant-repair");
                 return;
             }
@@ -75,7 +75,7 @@ public class ForgeMenu extends Menu {
             int runes = (int) (baseRunes * multiplier);
 
             List<Placeholder<Player>> placeholders = List.of(
-                    new Placeholder<>("value", String.valueOf(cost)),
+                    new Placeholder<>("value", numberFormat.format(cost)),
                     new Placeholder<>("runes", runes));
 
             ItemStack clone = itemStack.clone();
@@ -84,7 +84,8 @@ public class ForgeMenu extends Menu {
 
             repairButton.setDisplayItem(clone);
             repairButton.setItemPlaceholders(placeholders);
-            repairButton.setLeftClickAction(() -> {
+
+            Runnable repairRunnable = () -> {
                 if (!economy.has(getViewer(), cost)) {
                     messages.sendMessage(player, "not-enough-money");
                     sounds.playSound(player, "error");
@@ -103,12 +104,15 @@ public class ForgeMenu extends Menu {
                 sounds.playSound(player, "repaired");
                 messages.sendMessage(player, "repaired");
 
-                repairButton.setDisplayItem(defaultRepair);
-                resultButton.setDisplayItem(defaultResult);
+                resetButton(repairButton, "r");
+                resetButton(resultButton, "u");
                 menu.forceUpdate();
-            });
+            };
 
-            ItemStack repairedClone = repairItem(itemStack.clone());
+            repairButton.setLeftClickAction(repairRunnable);
+            resultButton.setLeftClickAction(repairRunnable);
+
+            ItemStack repairedClone = repairItem(clone.clone());
             resultButton.setDisplayItem(repairedClone);
             menu.forceUpdate();
         });
@@ -117,6 +121,11 @@ public class ForgeMenu extends Menu {
     @Override
     public String getIdentifier() {
         return "forge";
+    }
+
+    public void resetButton(Button button, String identifier) {
+        button.setDisplayItem(applicator.getItem(identifier));
+        button.setLeftClickAction(() -> {});
     }
 
     public boolean removeRunes(Player player, int runes) {

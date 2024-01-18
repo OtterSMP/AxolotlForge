@@ -18,10 +18,10 @@ import java.util.*;
 import java.util.function.UnaryOperator;
 
 public final class ItemUtil {
-    private static final List<String> TOOLS = List.of("pickaxe", "axe", "shovel", "hoe", "sword");
+    private static final List<String> FORGE_COMPATIBLE = List.of("pickaxe", "axe", "shovel", "hoe", "sword", "bow", "helmet", "chestplate", "leggings", "boots");
 
-    public static boolean isTool(ItemStack item) {
-        for (String tool : TOOLS) {
+    public static boolean isForgeCompatible(ItemStack item) {
+        for (String tool : FORGE_COMPATIBLE) {
             if (!item.getType().name().contains(tool.toUpperCase(Locale.ROOT))) {
                 return true;
             }

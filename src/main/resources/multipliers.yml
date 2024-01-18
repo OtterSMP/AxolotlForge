@@ -9,4 +9,8 @@ tool:
   sword: 2.5
   axe: 1.25
   shovel: 1.25
-  armor: 1.25
+  chestplate: 1.25
+  helmet: 1.25
+  leggings: 1.25
+  boots: 1.25
+  bow: 1.5

@@ -18,8 +18,11 @@ public class MultiplierParser extends YMLBase {
 
         ConfigurationSection multiplierSection = getConfiguration().getConfigurationSection(sectionName);
 
-        for (String rarity : multiplierSection.getKeys(false)) {
-            rarityMultipliers.put(rarity, multiplierSection.getDouble(rarity));
+        for (String identifier : multiplierSection.getKeys(false)) {
+
+            double multiplier = multiplierSection.getDouble(identifier);
+            rarityMultipliers.put(identifier, multiplier);
+            System.out.println("Parsed " + identifier + " with value " + multiplier);
         }
 
         return rarityMultipliers;

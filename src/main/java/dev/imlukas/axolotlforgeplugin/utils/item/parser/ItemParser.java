@@ -161,7 +161,7 @@ public class ItemParser {
 
             AttributeModifier modifier = new AttributeModifier(
                     UUID.randomUUID(),
-                    "axolotl-classes-" + attribute.name().toLowerCase(),
+                    "modifier-" + attribute.name().toLowerCase(),
                     amount,
                     operation,
                     slot

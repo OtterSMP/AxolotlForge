@@ -2,6 +2,7 @@ package dev.imlukas.axolotlforgeplugin;
 
 import dev.imlukas.axolotlforgeplugin.commands.ForgeMenuCommand;
 import dev.imlukas.axolotlforgeplugin.multiplier.ForgeMultipliers;
+import dev.imlukas.axolotlforgeplugin.multiplier.MultiplierParser;
 import dev.imlukas.axolotlforgeplugin.utils.command.command.CommandManager;
 import dev.imlukas.axolotlforgeplugin.utils.command.command.impl.AdvancedCommand;
 import dev.imlukas.axolotlforgeplugin.utils.menu.registry.MenuRegistry;
@@ -30,7 +31,6 @@ public final class AxolotlForgePlugin extends BetterJavaPlugin {
     private CommandManager commandManager;
 
     private ForgeMultipliers forgeMultipliers;
-    private FileConfiguration multiplierConfig;
 
     @Override
     public void onEnable() {
@@ -40,20 +40,11 @@ public final class AxolotlForgePlugin extends BetterJavaPlugin {
         this.messages = new Messages(this);
         this.soundManager = new SoundManager(this);
         this.menuRegistry = new MenuRegistry(this);
-        this.forgeMultipliers = new ForgeMultipliers();
-
-        YMLBase base = new YMLBase(this, "multipliers.yml", true);
-        multiplierConfig = base.getConfiguration();
-
-        for (Map.Entry<String, Double> rarity : getRarityMultipliers("rarity").entrySet()) {
-            forgeMultipliers.addRarityMultiplier(rarity.getKey(), rarity.getValue());
-        }
-
-        for (Map.Entry<String, Double> tool : getRarityMultipliers("tool").entrySet()) {
-            forgeMultipliers.addToolMultiplier(tool.getKey(), tool.getValue());
-        }
-
         this.commandManager = new CommandManager(this, messages);
+        this.forgeMultipliers = new ForgeMultipliers();
+        MultiplierParser parser = new MultiplierParser(this);
+        parser.parse("rarity").forEach(forgeMultipliers::addRarityMultiplier);
+        parser.parse("tool").forEach(forgeMultipliers::addToolMultiplier);
 
         registerCommand(new ForgeMenuCommand(this));
     }
@@ -63,17 +54,6 @@ public final class AxolotlForgePlugin extends BetterJavaPlugin {
         // Plugin shutdown logic
     }
 
-    public Map<String, Double> getRarityMultipliers(String sectionName) {
-        Map<String, Double> rarityMultipliers = new HashMap<>();
-
-        ConfigurationSection multiplierSection = multiplierConfig.getConfigurationSection(sectionName);
-
-        for (String rarity : multiplierSection.getKeys(false)) {
-            rarityMultipliers.put(rarity, multiplierSection.getDouble(rarity));
-        }
-
-        return rarityMultipliers;
-    }
 
     public void registerCommand(AdvancedCommand command) {
         commandManager.registerCommand(command);

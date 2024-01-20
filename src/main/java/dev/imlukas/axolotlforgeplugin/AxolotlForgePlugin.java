@@ -34,6 +34,7 @@ public final class AxolotlForgePlugin extends BetterJavaPlugin {
 
     @Override
     public void onEnable() {
+        FileConfiguration configuration = getConfig();
         super.onEnable();
         this.pluginSettings = new PluginSettings(this.getConfig());
         setupEconomy();
@@ -45,6 +46,11 @@ public final class AxolotlForgePlugin extends BetterJavaPlugin {
         MultiplierParser parser = new MultiplierParser(this);
         parser.parse("rarity").forEach(forgeMultipliers::addRarityMultiplier);
         parser.parse("tool").forEach(forgeMultipliers::addToolMultiplier);
+
+        configuration.getConfigurationSection("unicodes").getKeys(false).forEach(key -> {
+            String unicode = configuration.getString("unicodes." + key);
+            forgeMultipliers.addUnicode(key, unicode);
+        });
 
         registerCommand(new ForgeMenuCommand(this));
     }

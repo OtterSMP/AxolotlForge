@@ -10,14 +10,14 @@ import java.util.Map;
 
 public class ForgeMultipliers {
 
-    private static final Map<String, String> RARITIES_UNICODES = Map.of(
-            "common", "\uE11A",
-            "rare", "\uE11B",
-            "exotic", "\uE11C",
-            "mythic", "\uE11D");
+    private final Map<String, String> unicodes = new HashMap<>();
     private final Map<String, Double> rarityMultipliers = new HashMap<>();
     private final Map<String, Double> toolMultipliers = new HashMap<>();
 
+
+    public void addUnicode(String rarity, String unicode) {
+        unicodes.put(rarity, unicode);
+    }
 
     public void addRarityMultiplier(String rarity, double multiplier) {
         rarityMultipliers.put(rarity, multiplier);
@@ -39,13 +39,13 @@ public class ForgeMultipliers {
         ItemMeta meta = toRepair.getItemMeta();
         List<String> lore = meta.getLore();
 
-        double rarityMultiplier = getRarityMultiplier(lore);
+        double rarityMultiplier = getMultiplier(lore);
         double toolMultiplier = toolMultipliers.getOrDefault(toolType, 1.0);
 
         return rarityMultiplier * toolMultiplier;
     }
 
-    public double getRarityMultiplier(List<String> lore) {
+    public double getMultiplier(List<String> lore) {
         if (lore == null) {
             return 1.0;
         }
@@ -53,7 +53,7 @@ public class ForgeMultipliers {
             String rarity = entry.getKey();
             double multiplier = entry.getValue();
 
-            if (lore.contains(RARITIES_UNICODES.get(rarity))) {
+            if (lore.contains(unicodes.get(rarity))) {
                 return multiplier;
             }
         }
